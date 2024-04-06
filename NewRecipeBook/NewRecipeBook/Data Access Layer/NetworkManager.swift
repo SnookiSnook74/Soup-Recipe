@@ -5,19 +5,27 @@
 //  Created by DonHalab on 18.12.2023.
 //
 
-import Alamofire
-import Foundation
 
+import UIKit
+
+/// Класс для похода в сеть
 class NetworkManager {
-    func downloadImage(url: String, completion: @escaping (Data?) -> Void) {
-        AF.request(url).responseData { response in
-            switch response.result {
-            case let .success(data):
-                completion(data)
-            case let .failure(error):
-                print("Ошибка загрузки изображения: \(error)")
-                completion(nil)
-            }
+    
+    static let shared = NetworkManager()
+    
+    private init() {}
+
+    func loadImage(url: String) async throws -> UIImage {
+        
+        guard let url = URL(string: url) else {
+            throw NSError(domain: "Данного URL не существует", code: 1)
         }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        guard let image = UIImage(data: data) else {
+            throw NSError(domain: "Ошибка при загрузке изображения", code: 2)
+        }
+        return image
     }
 }

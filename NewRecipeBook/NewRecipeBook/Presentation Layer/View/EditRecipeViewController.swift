@@ -8,15 +8,15 @@
 import UIKit
 
 class EditRecipeViewController: UIViewController {
-    var recipeEdit: RealmRecipe?
-    var manager = RealmDatabaseManager()
+//    var recipeEdit: RealmRecipe?
+//    var manager = RealmDatabaseManager()
 
     var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
-    
+
     var descriptionLabelName: UILabel = {
         var descript = UILabel()
         descript.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +34,7 @@ class EditRecipeViewController: UIViewController {
         textField.backgroundColor = .tertiarySystemGroupedBackground
         return textField
     }()
-    
+
     var descriptionLabelImage: UILabel = {
         var descript = UILabel()
         descript.translatesAutoresizingMaskIntoConstraints = false
@@ -68,7 +68,7 @@ class EditRecipeViewController: UIViewController {
         textView.backgroundColor = .tertiarySystemGroupedBackground
         return textView
     }()
-    
+
     var stepsViewLabel: UILabel = {
         let stepsView = UILabel()
         stepsView.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +76,7 @@ class EditRecipeViewController: UIViewController {
         stepsView.text = "Рецепт"
         return stepsView
     }()
-    
+
     var descriptionViewSteps: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -94,7 +94,6 @@ class EditRecipeViewController: UIViewController {
         setupConstraint()
         setupNavigationBar()
         view.backgroundColor = .white
-      
     }
 }
 
@@ -109,10 +108,7 @@ extension EditRecipeViewController {
     }
 
     @objc func saveChanges() {
-        manager.updateImages(recipe: recipeEdit!, newImageData: imagesView.image?.jpegData(compressionQuality: 1.0))
-        manager.updateRecipeName(recipe: recipeEdit!, with: recipeNameTextField.text ?? "")
-        manager.updateRecipeDescription(recipe: recipeEdit!, with: descriptionViewList.text)
-        manager.updateRecipeSteps(recipe: recipeEdit!, with: descriptionViewSteps.text)
+
         NotificationCenter.default.post(name: .recipeUpdated, object: nil)
         navigationController?.popViewController(animated: true)
     }
@@ -155,7 +151,7 @@ extension EditRecipeViewController {
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
+
             descriptionLabelName.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 20),
             descriptionLabelName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             descriptionLabelName.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -164,11 +160,10 @@ extension EditRecipeViewController {
             recipeNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             recipeNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             recipeNameTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
-            
+
             descriptionLabelImage.topAnchor.constraint(equalTo: recipeNameTextField.bottomAnchor, constant: 20),
             descriptionLabelImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             descriptionLabelImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-    
 
             imagesView.topAnchor.constraint(equalTo: descriptionLabelImage.bottomAnchor, constant: 20),
             imagesView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -184,11 +179,11 @@ extension EditRecipeViewController {
             descriptionViewList.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             descriptionViewList.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             descriptionViewList.heightAnchor.constraint(greaterThanOrEqualToConstant: 50),
-            
+
             stepsViewLabel.topAnchor.constraint(equalTo: descriptionViewList.bottomAnchor, constant: 20),
             stepsViewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stepsViewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
+
             descriptionViewSteps.topAnchor.constraint(equalTo: stepsViewLabel.bottomAnchor, constant: 10),
             descriptionViewSteps.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             descriptionViewSteps.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
@@ -201,10 +196,6 @@ extension EditRecipeViewController {
 
 extension EditRecipeViewController {
     private func setupView() {
-        recipeNameTextField.text = recipeEdit?.name
-        imagesView.image = UIImage(data: recipeEdit?.imageData ?? Data())
-        descriptionViewList.text = recipeEdit?.descript
-        descriptionViewSteps.text = recipeEdit?.steps
         let imageTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         imagesView.isUserInteractionEnabled = true
         imagesView.addGestureRecognizer(imageTapGesture)

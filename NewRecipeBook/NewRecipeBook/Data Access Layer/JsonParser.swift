@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class JsonParser: RecipeParserForRealm {
+final class JsonParser: RecipeParser {
     func parseRecipes() -> [Recipe] {
         guard let url = Bundle.main.url(forResource: "recipe", withExtension: "json"),
               let data = try? Data(contentsOf: url)

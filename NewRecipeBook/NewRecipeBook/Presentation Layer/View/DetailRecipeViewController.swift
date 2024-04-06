@@ -8,7 +8,7 @@
 import UIKit
 
 class DetailRecipeViewController: UIViewController {
-    var recipe: RealmRecipe?
+ //   var recipe: RealmRecipe?
 
     var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -84,22 +84,22 @@ class DetailRecipeViewController: UIViewController {
     }
 
     @objc func updateUI() {
-        imagesView.image = UIImage(data: recipe?.imageData ?? Data())
-        descriptionViewList.text = recipe?.descript
-        ingredientsListView.text = recipe?.ingredients
-        stepsViewList.text = recipe?.steps
+//        imagesView.image = UIImage(data: recipe?.imageData ?? Data())
+//        descriptionViewList.text = recipe?.descript
+//        ingredientsListView.text = recipe?.ingredients
+//        stepsViewList.text = recipe?.steps
     }
 
     private func setupView() {
-        imagesView.image = UIImage(data: recipe?.imageData ?? Data())
-        descriptionViewList.text = recipe?.descript
-        ingredientsListView.text = recipe?.ingredients
-        stepsViewList.text = recipe?.steps
+//        imagesView.image = UIImage(data: recipe?.imageData ?? Data())
+//        descriptionViewList.text = recipe?.descript
+//        ingredientsListView.text = recipe?.ingredients
+//        stepsViewList.text = recipe?.steps
     }
 
     @objc private func editRecipe() {
         let editRecipe = EditRecipeViewController()
-        editRecipe.recipeEdit = recipe
+    //    editRecipe.recipeEdit = recipe
         navigationController?.pushViewController(editRecipe, animated: true)
     }
 }

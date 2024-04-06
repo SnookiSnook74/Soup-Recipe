@@ -1,5 +1,5 @@
 //
-//  RecipeParserForRealm.swift
+//  ProtocolRecipeParserForRealm.swift
 //  NewRecipeBook
 //
 //  Created by DonHalab on 18.12.2023.
@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol RecipeParserForRealm {
+protocol RecipeParser {
     func parseRecipes() -> [Recipe]
 }
