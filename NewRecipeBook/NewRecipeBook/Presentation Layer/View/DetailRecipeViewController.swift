@@ -8,7 +8,6 @@
 import UIKit
 
 class DetailRecipeViewController: UIViewController {
- //   var recipe: RealmRecipe?
 
     var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -79,7 +78,7 @@ class DetailRecipeViewController: UIViewController {
         addView()
         setupConstraint()
         setupNavigationBar()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: .recipeUpdated, object: nil)
+      //  NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: .recipeUpdated, object: nil)
         view.backgroundColor = .white
     }
 
