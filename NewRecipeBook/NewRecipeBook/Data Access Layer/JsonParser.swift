@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Класс отвечающий за парсинг данных из файлов формата JSON
 final class JsonParser: RecipeParser {
     func parseRecipes() -> [Recipe] {
         guard let url = Bundle.main.url(forResource: "recipe", withExtension: "json"),

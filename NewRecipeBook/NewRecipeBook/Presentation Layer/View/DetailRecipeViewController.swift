@@ -8,7 +8,8 @@
 import UIKit
 
 class DetailRecipeViewController: UIViewController {
- //   var recipe: RealmRecipe?
+    
+    var recipe: Recipe?
 
     var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -79,27 +80,33 @@ class DetailRecipeViewController: UIViewController {
         addView()
         setupConstraint()
         setupNavigationBar()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: .recipeUpdated, object: nil)
+        configureUI()
+
         view.backgroundColor = .white
+    }
+    
+    private func configureUI() {
+        guard let recipe = recipe else { return }
+        
+        title = recipe.name
+        Task {
+            imagesView.image = try await NetworkManager.shared.loadImage(url: recipe.image_url)
+        }
+        descriptionViewList.text = recipe.description
+        ingredientsListView.text = recipe.steps.first?.ingredients.map {"\($0.name) : \($0.quantity)"}.joined(separator: "\n")
+        stepsViewList.text = recipe.steps.map { "Шаг \($0.number): \($0.step)" }.joined(separator: "\n\n")
     }
 
     @objc func updateUI() {
-//        imagesView.image = UIImage(data: recipe?.imageData ?? Data())
-//        descriptionViewList.text = recipe?.descript
-//        ingredientsListView.text = recipe?.ingredients
-//        stepsViewList.text = recipe?.steps
+
     }
 
     private func setupView() {
-//        imagesView.image = UIImage(data: recipe?.imageData ?? Data())
-//        descriptionViewList.text = recipe?.descript
-//        ingredientsListView.text = recipe?.ingredients
-//        stepsViewList.text = recipe?.steps
+       
     }
 
     @objc private func editRecipe() {
         let editRecipe = EditRecipeViewController()
-    //    editRecipe.recipeEdit = recipe
         navigationController?.pushViewController(editRecipe, animated: true)
     }
 }
