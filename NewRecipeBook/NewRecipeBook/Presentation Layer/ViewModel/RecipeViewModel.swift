@@ -6,3 +6,18 @@
 //
 
 import Foundation
+
+
+class RecipeViewModel {
+    
+    let jsonParser = JsonParser()
+    var allRecipe: [Recipe] = []
+    
+   
+    init() {
+        allRecipe = jsonParser.parseRecipes()
+    }
+    
+    
+    
+}

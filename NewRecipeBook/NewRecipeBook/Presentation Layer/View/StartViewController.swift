@@ -9,8 +9,7 @@ import UIKit
 
 class StartViewController: UIViewController {
     
-    var jsonParser = JsonParser()
-    var allRecipe: [Recipe]?
+    let viewModel = RecipeViewModel()
     
     var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -25,14 +24,9 @@ class StartViewController: UIViewController {
         return table
     }()
     
-    func loadRecipes() {
-        table.reloadData()
-    }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        allRecipe = jsonParser.parseRecipes()
         setupView()
         constraintSetup()
     }
@@ -44,10 +38,6 @@ class StartViewController: UIViewController {
         table.keyboardDismissMode = .onDrag
         navigationItem.titleView = searchBar
         view.backgroundColor = .white
-    }
-    
-    @objc func updateUI() {
-        loadRecipes()
     }
     
     func constraintSetup() {
@@ -68,13 +58,14 @@ extension StartViewController: UITableViewDelegate {
     
     func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detail = DetailRecipeViewController()
+        detail.recipe = viewModel.allRecipe[indexPath.row]
         navigationController?.pushViewController(detail, animated: true)
     }
 }
 
 extension StartViewController: UITableViewDataSource {
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return allRecipe?.count ?? 0
+        return viewModel.allRecipe.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -82,27 +73,24 @@ extension StartViewController: UITableViewDataSource {
             fatalError("Не удалось найти указанную TableViewCell")
         }
         
-        if let recipe = allRecipe?[indexPath.row] {
-            cell.recipeName.text = recipe.name
-            
-            Task {
-                do {
-                    let image = try await NetworkManager.shared.loadImage(url: recipe.image_url)
-                    if let updateCell = tableView.cellForRow(at: indexPath) as? RecipeTableViewCell {
-                        DispatchQueue.main.async {
-                            updateCell.recipeImage.image = image
-                        }
+        let recipe = viewModel.allRecipe[indexPath.row]
+        cell.recipeName.text = recipe.name
+        cell.currentImageUrl = recipe.image_url
+    
+        Task {
+            do {
+                let image = try await NetworkManager.shared.loadImage(url: recipe.image_url)
+                if let updateCell = tableView.cellForRow(at: indexPath) as? RecipeTableViewCell,
+                   updateCell.currentImageUrl == recipe.image_url {
+                    DispatchQueue.main.async {
+                        updateCell.recipeImage.image = image
                     }
-                } catch {
-                    fatalError("Что-то пошло не так")
                 }
+            } catch {
+                fatalError("Что-то пошло не так")
             }
         }
         return cell
     }
 }
 
-
-//#Preview {
-//    StartViewController()
-//}

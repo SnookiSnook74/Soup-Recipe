@@ -8,6 +8,9 @@
 import UIKit
 
 class RecipeTableViewCell: UITableViewCell {
+    
+    var currentImageUrl: String?
+    
     let recipeImage: UIImageView = {
         var imagesView = UIImageView()
         imagesView.contentMode = .scaleAspectFill
