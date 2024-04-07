@@ -10,7 +10,7 @@ import Foundation
 struct Recipe: Codable {
     var name: String
     var description: String
-    var image_url: String
+    var imageUrl: String
     var steps: [Step]
 }
 

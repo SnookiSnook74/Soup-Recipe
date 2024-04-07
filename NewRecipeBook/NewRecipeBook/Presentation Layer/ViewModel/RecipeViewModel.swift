@@ -13,11 +13,19 @@ class RecipeViewModel {
     let jsonParser = JsonParser()
     var allRecipe: [Recipe] = []
     
-   
     init() {
         allRecipe = jsonParser.parseRecipes()
+        Task {
+            await downloadRecipeInCoreDate()
+        }
     }
     
+    
+    func downloadRecipeInCoreDate() async {
+        for recipe in allRecipe {
+            await StorageDataManager.shared.updateOrCreateRecipe(from: recipe)
+        }
+    }
     
     
 }

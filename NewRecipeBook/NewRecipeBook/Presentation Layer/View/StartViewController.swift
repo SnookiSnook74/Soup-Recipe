@@ -10,6 +10,8 @@ import UIKit
 class StartViewController: UIViewController {
     
     let viewModel = RecipeViewModel()
+    var isSearch: Bool = false
+    var filtureRecipe: [Recipe] = []
     
     var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -33,6 +35,7 @@ class StartViewController: UIViewController {
     
     func setupView() {
         view.addSubview(table)
+        searchBar.delegate = self
         table.dataSource = self
         table.delegate = self
         table.keyboardDismissMode = .onDrag
@@ -50,6 +53,26 @@ class StartViewController: UIViewController {
     }
 }
 
+extension StartViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            isSearch = false
+            filtureRecipe = []
+        } else {
+            isSearch = true
+            filtureRecipe = viewModel.allRecipe.filter { $0.name.lowercased().contains(searchText.lowercased())}
+        }
+        table.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            isSearch = false
+            searchBar.text = ""
+            searchBar.resignFirstResponder()
+            table.reloadData()
+        }
+}
 
 extension StartViewController: UITableViewDelegate {
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
@@ -58,14 +81,14 @@ extension StartViewController: UITableViewDelegate {
     
     func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detail = DetailRecipeViewController()
-        detail.recipe = viewModel.allRecipe[indexPath.row]
+        detail.recipe = isSearch ? filtureRecipe[indexPath.row] : viewModel.allRecipe[indexPath.row]
         navigationController?.pushViewController(detail, animated: true)
     }
 }
 
 extension StartViewController: UITableViewDataSource {
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return viewModel.allRecipe.count
+        return isSearch ? filtureRecipe.count : viewModel.allRecipe.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -73,15 +96,16 @@ extension StartViewController: UITableViewDataSource {
             fatalError("Не удалось найти указанную TableViewCell")
         }
         
-        let recipe = viewModel.allRecipe[indexPath.row]
+        let recipe = isSearch ? filtureRecipe[indexPath.row] : viewModel.allRecipe[indexPath.row]
+        
         cell.recipeName.text = recipe.name
-        cell.currentImageUrl = recipe.image_url
+        cell.currentImageUrl = recipe.imageUrl
     
         Task {
             do {
-                let image = try await NetworkManager.shared.loadImage(url: recipe.image_url)
+                let image = try await NetworkManager.shared.loadImage(url: recipe.imageUrl)
                 if let updateCell = tableView.cellForRow(at: indexPath) as? RecipeTableViewCell,
-                   updateCell.currentImageUrl == recipe.image_url {
+                   updateCell.currentImageUrl == recipe.imageUrl {
                     DispatchQueue.main.async {
                         updateCell.recipeImage.image = image
                     }

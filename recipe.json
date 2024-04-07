@@ -2,7 +2,7 @@
     {
       "name": "Борщ",
       "description": "Борщ - это классическое украинское блюдо, приготовленное на основе свеклы и подаваемое с сметаной и хлебом.",
-      "image_url": "https://i.ibb.co/4VvjVbk/borsh.png",
+      "imageUrl": "https://i.ibb.co/4VvjVbk/borsh.png",
       "steps": [
         {
           "ingredients": [
@@ -74,7 +74,7 @@
     {
       "name": "Солянка",
       "description": "Солянка - это суп с мясом и разнообразными ингредиентами, придающими ему уникальный вкус.",
-      "image_url": "https://i.ibb.co/bRYVFZ9/solyanka.png",
+      "imageUrl": "https://i.ibb.co/bRYVFZ9/solyanka.png",
       "steps": [
         {
           "ingredients": [
@@ -135,7 +135,7 @@
     {
       "name": "Суп с курицей",
       "description": "Питательный суп с нежным курином мясом и овощами.",
-      "image_url": "https://i.ibb.co/bLBxSH5/chicken-soup.png",
+      "imageUrl": "https://i.ibb.co/bLBxSH5/chicken-soup.png",
       "steps": [
         {
           "ingredients": [
@@ -196,7 +196,7 @@
     {
       "name": "Томатный суп",
       "description": "Ароматный суп с помидорами и специями.",
-      "image_url": "https://i.ibb.co/9VJVDms/tomato-soup.png",
+      "imageUrl": "https://i.ibb.co/9VJVDms/tomato-soup.png",
       "steps": [
         {
           "ingredients": [
@@ -242,7 +242,7 @@
   {
     "name": "Грибной суп",
     "description": "Нежный суп с грибами и сливками.",
-    "image_url": "https://i.ibb.co/r58NHJS/mushroom-soup.png",
+    "imageUrl": "https://i.ibb.co/r58NHJS/mushroom-soup.png",
     "steps": [
       {
         "ingredients": [
@@ -288,7 +288,7 @@
   {
     "name": "Гороховый суп",
     "description": "Сытный суп с горохом и картофелем.",
-    "image_url": "https://i.ibb.co/VtrCY0p/pea-soup.png",
+    "imageUrl": "https://i.ibb.co/VtrCY0p/pea-soup.png",
     "steps": [
       {
         "ingredients": [
@@ -345,7 +345,7 @@
   {
     "name": "Крем-суп с брокколи",
     "description": "Нежный суп с брокколи и сливками.",
-    "image_url": "https://i.ibb.co/2y2z5RN/broccoli-soup.png",
+    "imageUrl": "https://i.ibb.co/2y2z5RN/broccoli-soup.png",
     "steps": [
       {
         "ingredients": [
@@ -390,7 +390,7 @@
   {
     "name": "Cуп-Лапша",
     "description": "Суп-Лапша - это популярное блюдо во многих культурах, обычно состоящее из тонких полосок теста, вареных в бульоне с различными добавками, такими как овощи, мясо или специи.",
-    "image_url": "https://i.ibb.co/pJsfY4y/lapsha.png",
+    "imageUrl": "https://i.ibb.co/pJsfY4y/lapsha.png",
     "steps": [
       {
         "ingredients": [
@@ -456,7 +456,7 @@
   {
     "name": "Харчо",
     "description": "Харчо - это традиционный грузинский суп, известный своим острым и ароматным вкусом. Он готовится на основе говядины или баранины с добавлением риса, орехов, чеснока и специй.",
-    "image_url": "https://i.ibb.co/HhzNddT/DALL-E-2023-12-21-19-37-29-A-bowl-of-traditional-Georgian-soup-called-Kharcho-served-hot-The-soup-is.png",
+    "imageUrl": "https://i.ibb.co/HhzNddT/DALL-E-2023-12-21-19-37-29-A-bowl-of-traditional-Georgian-soup-called-Kharcho-served-hot-The-soup-is.png",
     "steps": [
       {
         "ingredients": [
@@ -533,7 +533,7 @@
   {
     "name": "Постный луковый суп",
     "description": "Постный луковый суп - это блюдо, идеально подходящее для веганской и постной диеты. Основой супа является карамелизированный лук, придающий блюду сладкий и насыщенный вкус, а бульон готовится на овощной основе.",
-    "image_url": "https://i.ibb.co/4dGNct3/DALL-E-2023-12-21-19-39-05-A-bowl-of-traditional-vegan-onion-soup-served-steaming-hot-This-soup-is-a.png",
+    "imageUrl": "https://i.ibb.co/4dGNct3/DALL-E-2023-12-21-19-39-05-A-bowl-of-traditional-vegan-onion-soup-served-steaming-hot-This-soup-is-a.png",
     "steps": [
       {
         "ingredients": [
@@ -589,7 +589,7 @@
   {
     "name": "Фасолевый суп с рулькой и колбасками",
     "description": "Этот сытный и ароматный суп сочетает в себе мягкую текстуру фасоли с копченой рулькой и ароматными колбасками. Отлично подходит для холодных дней и любителей плотных, мясных блюд.",
-    "image_url": "https://i.ibb.co/2vXX5Jm/DALL-E-2023-12-21-19-43-35-A-hearty-bowl-of-bean-soup-with-pork-knuckle-and-sausages-served-steaming.png",
+    "imageUrl": "https://i.ibb.co/2vXX5Jm/DALL-E-2023-12-21-19-43-35-A-hearty-bowl-of-bean-soup-with-pork-knuckle-and-sausages-served-steaming.png",
     "steps": [
       {
         "ingredients": [
@@ -671,7 +671,7 @@
   {
     "name": "Зеленый борщ с щавелем и крапивой",
     "description": "Зеленый борщ - это весенний суп, который отличается освежающим вкусом благодаря сочетанию щавеля и крапивы. Идеально подходит для обеда в теплые дни и является отличным источником витаминов.",
-    "image_url": "https://i.ibb.co/KFNkjbK/DALL-E-2023-12-21-19-45-41-A-bowl-of-traditional-green-borscht-with-sorrel-and-nettle-served-hot-Thi.png",
+    "imageUrl": "https://i.ibb.co/KFNkjbK/DALL-E-2023-12-21-19-45-41-A-bowl-of-traditional-green-borscht-with-sorrel-and-nettle-served-hot-Thi.png",
     "steps": [
       {
         "ingredients": [

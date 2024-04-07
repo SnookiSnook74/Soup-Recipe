@@ -8,8 +8,7 @@
 import UIKit
 
 class EditRecipeViewController: UIViewController {
-//    var recipeEdit: RealmRecipe?
-//    var manager = RealmDatabaseManager()
+
 
     var scrollView: UIScrollView = {
         let scrollView = UIScrollView()

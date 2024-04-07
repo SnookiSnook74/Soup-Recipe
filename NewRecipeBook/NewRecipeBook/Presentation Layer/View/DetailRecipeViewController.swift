@@ -91,7 +91,7 @@ class DetailRecipeViewController: UIViewController {
         
         title = recipe.name
         Task {
-            imagesView.image = try await NetworkManager.shared.loadImage(url: recipe.image_url)
+            imagesView.image = try await NetworkManager.shared.loadImage(url: recipe.imageUrl)
         }
         descriptionViewList.text = recipe.description
         ingredientsListView.text = recipe.steps.first?.ingredients.map {"\($0.name) : \($0.quantity)"}.joined(separator: "\n")
