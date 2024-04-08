@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Модель рецепта
 struct Recipe: Codable {
     var name: String
     var description: String

@@ -33,9 +33,6 @@ class RecipeTableViewCell: UITableViewCell {
         setupConstraints()
     }
 
-    func configure() {
-     
-    }
 
     func setupConstraints() {
         NSLayoutConstraint.activate([

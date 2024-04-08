@@ -6,12 +6,11 @@
 //
 
 import UIKit
+import CoreData
 
 class StartViewController: UIViewController {
     
     let viewModel = RecipeViewModel()
-    var isSearch: Bool = false
-    var filtureRecipe: [Recipe] = []
     
     var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -26,18 +25,19 @@ class StartViewController: UIViewController {
         return table
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         constraintSetup()
     }
     
+    /// Начальные настройки нашей View
     func setupView() {
         view.addSubview(table)
         searchBar.delegate = self
         table.dataSource = self
         table.delegate = self
+        viewModel.fetchedResultsController.delegate = self
         table.keyboardDismissMode = .onDrag
         navigationItem.titleView = searchBar
         view.backgroundColor = .white
@@ -56,22 +56,17 @@ class StartViewController: UIViewController {
 extension StartViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
-            isSearch = false
-            filtureRecipe = []
-        } else {
-            isSearch = true
-            filtureRecipe = viewModel.allRecipe.filter { $0.name.lowercased().contains(searchText.lowercased())}
-        }
-        table.reloadData()
+        viewModel.updateSearchResults(for: searchText)
+        UIView.transition(with: table, duration: 0.35, options: .transitionCrossDissolve, animations: {
+            self.table.reloadData()
+        })
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-            isSearch = false
-            searchBar.text = ""
-            searchBar.resignFirstResponder()
-            table.reloadData()
-        }
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+        viewModel.updateSearchResults(for: "")
+    }
 }
 
 extension StartViewController: UITableViewDelegate {
@@ -80,41 +75,60 @@ extension StartViewController: UITableViewDelegate {
     }
     
     func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detail = DetailRecipeViewController()
-        detail.recipe = isSearch ? filtureRecipe[indexPath.row] : viewModel.allRecipe[indexPath.row]
-        navigationController?.pushViewController(detail, animated: true)
+        let detailVC = DetailRecipeViewController()
+        let selectedRecipeEntity = viewModel.fetchedResultsController.object(at: indexPath)
+           detailVC.recipeEntity = selectedRecipeEntity
+           navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 
 extension StartViewController: UITableViewDataSource {
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return isSearch ? filtureRecipe.count : viewModel.allRecipe.count
+    func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sections = viewModel.fetchedResultsController.sections else { return 0 }
+        return sections[section].numberOfObjects
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as? RecipeTableViewCell else {
             fatalError("Не удалось найти указанную TableViewCell")
         }
+
+        let recipeEntity = viewModel.fetchedResultsController.object(at: indexPath)
+        cell.recipeName.text = recipeEntity.name
         
-        let recipe = isSearch ? filtureRecipe[indexPath.row] : viewModel.allRecipe[indexPath.row]
-        
-        cell.recipeName.text = recipe.name
-        cell.currentImageUrl = recipe.imageUrl
-    
-        Task {
-            do {
-                let image = try await NetworkManager.shared.loadImage(url: recipe.imageUrl)
-                if let updateCell = tableView.cellForRow(at: indexPath) as? RecipeTableViewCell,
-                   updateCell.currentImageUrl == recipe.imageUrl {
-                    DispatchQueue.main.async {
-                        updateCell.recipeImage.image = image
-                    }
-                }
-            } catch {
-                fatalError("Что-то пошло не так")
-            }
+        if let imageData = recipeEntity.image {
+            cell.recipeImage.image = UIImage(data: imageData)
+        } else {
+            cell.currentImageUrl = recipeEntity.imageUrl
         }
         return cell
     }
+}
+
+extension StartViewController: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        table.beginUpdates()
+    }
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        table.endUpdates()
+    }
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            table.insertRows(at: [newIndexPath!], with: .fade)
+        case .delete:
+            table.deleteRows(at: [indexPath!], with: .left)
+        case .update:
+            table.reloadRows(at: [indexPath!], with: .fade)
+        case .move:
+            table.moveRow(at: indexPath!, to: newIndexPath!)
+        @unknown default:
+            fatalError("Ошибка в Controller")
+        }
+    }
+    
+    
 }
 

@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
-    <entity name="IngredientEntity" representedClassName="IngredientEntity" syncable="YES">
-        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="quality" optional="YES" attributeType="String"/>
-        <relationship name="steps" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StepEntity"/>
-    </entity>
     <entity name="RecipeEntity" representedClassName="RecipeEntity" syncable="YES">
         <attribute name="descriptionRecipe" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="imageUrl" optional="YES" attributeType="String"/>
+        <attribute name="ingredients" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="steps" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StepEntity"/>
-    </entity>
-    <entity name="StepEntity" representedClassName="StepEntity" syncable="YES">
-        <attribute name="number" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="step" optional="YES" attributeType="String"/>
-        <relationship name="ingredients" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="IngredientEntity"/>
-        <relationship name="recipe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecipeEntity"/>
     </entity>
 </model>

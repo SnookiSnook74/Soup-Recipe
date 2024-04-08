@@ -23,7 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            return container
        }()
     
-    func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+       
+        StorageDataManager.shared.persistentContainer = self.persistentContainer
         return true
     }
 

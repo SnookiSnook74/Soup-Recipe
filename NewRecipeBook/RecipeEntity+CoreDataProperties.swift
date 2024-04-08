@@ -24,24 +24,8 @@ extension RecipeEntity {
     @NSManaged public var image: Data?
     @NSManaged public var imageUrl: String?
     @NSManaged public var name: String?
-    @NSManaged public var steps: NSSet?
-
-}
-
-// MARK: Generated accessors for steps
-extension RecipeEntity {
-
-    @objc(addStepsObject:)
-    @NSManaged public func addToSteps(_ value: StepEntity)
-
-    @objc(removeStepsObject:)
-    @NSManaged public func removeFromSteps(_ value: StepEntity)
-
-    @objc(addSteps:)
-    @NSManaged public func addToSteps(_ values: NSSet)
-
-    @objc(removeSteps:)
-    @NSManaged public func removeFromSteps(_ values: NSSet)
+    @NSManaged public var step: String?
+    @NSManaged public var ingredients: String?
 
 }
 

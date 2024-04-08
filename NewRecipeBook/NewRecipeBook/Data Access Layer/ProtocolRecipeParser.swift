@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Протокол котому должны соответстовать любые парсеры
 protocol RecipeParser {
     func parseRecipes() -> [Recipe]
 }

@@ -5,7 +5,6 @@
 //  Created by DonHalab on 07.04.2024.
 //
 
-import Foundation
 import CoreData
 import UIKit
 
@@ -13,40 +12,35 @@ import UIKit
 final class StorageDataManager {
     
     static let shared = StorageDataManager()
+    var persistentContainer: NSPersistentContainer!
     
     private init() {}
     
-    /// Ссылка на контекст Managed Object Context
-     var context: NSManagedObjectContext {
-        return persistentContainer.viewContext
-    }
-    
-    /// Ссылка на Persistent Container
-    var persistentContainer: NSPersistentContainer {
-        var container: NSPersistentContainer?
-        DispatchQueue.main.sync {
-            container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+    var context: NSManagedObjectContext {
+        guard let context = persistentContainer?.viewContext else {
+            fatalError("Persistent container не был установлен.")
         }
-        return container!
+        return context
     }
     
     /// Метод для сохранения контекста
-        private func saveContext() {
-            if context.hasChanges {
-                do {
-                    try context.save()
-                } catch {
-                    let nserror = error as NSError
-                    fatalError("Не удалось сохранить изменения: \(nserror), \(nserror.userInfo)")
-                }
+    private func saveContext() {
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                let nserror = error as NSError
+                fatalError("Не удалось сохранить изменения: \(nserror), \(nserror.userInfo)")
             }
         }
+    }
     
-    
-    // Добавление или обновление рецепта
+    /// Добавление или обновление рецепта
     func updateOrCreateRecipe(from recipe: Recipe) async {
         let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "imageUrl == %@", recipe.imageUrl)
+        var stepString = ""
+        var ingredientsString = ""
         
         do {
             let results = try context.fetch(fetchRequest)
@@ -56,23 +50,45 @@ final class StorageDataManager {
                 recipeEntity = existingRecipe
             } else {
                 recipeEntity = RecipeEntity(context: context)
-                recipeEntity.imageUrl = recipe.imageUrl
-                
-                let image = try await NetworkManager.shared.loadImage(url: recipe.imageUrl)
-                if let imageData = image.jpegData(compressionQuality: 1.0) {
-                    recipeEntity.image = imageData
-                }
             }
             
             recipeEntity.name = recipe.name
             recipeEntity.descriptionRecipe = recipe.description
-            // Обновите связанные шаги и ингредиенты
+            recipeEntity.imageUrl = recipe.imageUrl
+    
             
+            for (index, step) in recipe.steps.enumerated() {
+                stepString += "Шаг \(index + 1): \(step.step)"
+                stepString += "\n\n"
+                
+                for ingredient in step.ingredients {
+                    ingredientsString += "\(ingredient.name) - \(ingredient.quantity)\n"
+                }
+            }
+        
+            recipeEntity.step = stepString
+            recipeEntity.ingredients = ingredientsString
+
+            let image = try await NetworkManager.shared.loadImage(url: recipe.imageUrl)
+            if let imageData = image.jpegData(compressionQuality: 1.0) {
+                recipeEntity.image = imageData
+            }
             saveContext()
         } catch {
             print("Ошибка при обновлении рецепта: \(error)")
         }
     }
 
-
+    /// Получение всех рецептов
+    func fetchRecipes() async -> [RecipeEntity] {
+        let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
+        do {
+            return try await context.perform {
+                try self.context.fetch(fetchRequest)
+            }
+        } catch let error as NSError {
+            print("Не удалось загрузить данные из CoreData. \(error), \(error.userInfo)")
+            return []
+        }
+    }
 }

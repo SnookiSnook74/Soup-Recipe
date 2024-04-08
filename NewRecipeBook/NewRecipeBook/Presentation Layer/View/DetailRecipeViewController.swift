@@ -8,9 +8,8 @@
 import UIKit
 
 class DetailRecipeViewController: UIViewController {
-
     
-    var recipe: Recipe?
+    var recipeEntity: RecipeEntity?
 
     var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -77,33 +76,23 @@ class DetailRecipeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Описание"
-        setupView()
         addView()
         setupConstraint()
         setupNavigationBar()
         configureUI()
-
         view.backgroundColor = .white
     }
     
     private func configureUI() {
-        guard let recipe = recipe else { return }
+        guard let recipeEntity = recipeEntity else { return }
         
-        title = recipe.name
-        Task {
-            imagesView.image = try await NetworkManager.shared.loadImage(url: recipe.imageUrl)
+        title = recipeEntity.name
+        if let imageData = recipeEntity.image {
+            imagesView.image = UIImage(data: imageData)
         }
-        descriptionViewList.text = recipe.description
-        ingredientsListView.text = recipe.steps.first?.ingredients.map {"\($0.name) : \($0.quantity)"}.joined(separator: "\n")
-        stepsViewList.text = recipe.steps.map { "Шаг \($0.number): \($0.step)" }.joined(separator: "\n\n")
-    }
-
-    @objc func updateUI() {
-
-    }
-
-    private func setupView() {
-       
+        descriptionViewList.text = recipeEntity.descriptionRecipe
+        stepsViewList.text = recipeEntity.step
+        ingredientsListView.text = recipeEntity.ingredients
     }
 
     @objc private func editRecipe() {
