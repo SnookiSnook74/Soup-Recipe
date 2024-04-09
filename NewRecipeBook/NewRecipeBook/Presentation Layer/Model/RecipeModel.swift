@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Модель рецепта
 struct Recipe: Codable {
@@ -25,4 +26,10 @@ struct Ingredient: Codable {
     var id: Int
     var name: String
     var quantity: String
+}
+
+
+struct WrapperModel {
+    var name: String?
+    var image: Data?
 }

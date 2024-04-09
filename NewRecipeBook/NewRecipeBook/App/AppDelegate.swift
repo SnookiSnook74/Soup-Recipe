@@ -40,21 +40,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
     }
     
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Невозможно сохранить контекст: \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-
-    
-    func applicationWillTerminate(_ application: UIApplication) {
-        self.saveContext()
-    }
-
 }

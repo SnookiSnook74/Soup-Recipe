@@ -10,7 +10,7 @@ import UIKit
 class DetailRecipeViewController: UIViewController {
     
     var recipeEntity: RecipeEntity?
-
+    
     var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -72,7 +72,7 @@ class DetailRecipeViewController: UIViewController {
         stepsView.font = .systemFont(ofSize: 18)
         return stepsView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Описание"

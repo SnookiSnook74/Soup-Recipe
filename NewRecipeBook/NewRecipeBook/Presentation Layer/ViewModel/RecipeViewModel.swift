@@ -8,16 +8,21 @@
 import CoreData
 import Foundation
 
+struct TestModel {
+    var name: String?
+    var image: Data?
+}
+
 class RecipeViewModel {
     
-    private let jsonParser: RecipeParser = JsonParser()
+    private var repository = RecipesRepository()
     var fetchedResultsController: NSFetchedResultsController<RecipeEntity>!
-    
     init() {
         setupFetchedResultsController()
-        loadRecipesFromJsonAndSaveToCoreData()
+        repository.loadRecipesFromJsonAndSaveToCoreData()
+        StorageDataManager.shared.fetchedResultsController = fetchedResultsController
     }
-    
+
     /// Метод для настройки  NSFetchedResultsController
     private func setupFetchedResultsController() {
         let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
@@ -32,38 +37,6 @@ class RecipeViewModel {
             try fetchedResultsController.performFetch()
         } catch let error as NSError {
             fatalError("Не удалось загрузить данные: \(error), \(error.userInfo)")
-        }
-    }
-    
-    /// Метод для загрузки данных в CoreData из RecipeModel
-    private func loadRecipesFromJsonAndSaveToCoreData() {
-        Task {
-            let dataExists = await checkDataExists()
-            guard !dataExists else { return }
-            
-            let recipes = jsonParser.parseRecipes()
-            
-            for recipe in recipes {
-                await StorageDataManager.shared.updateOrCreateRecipe(from: recipe)
-            }
-            do {
-                try fetchedResultsController.performFetch()
-            } catch let error as NSError {
-                fatalError("Не удалось загрузить данные после обновления: \(error), \(error.userInfo)")
-            }
-        }
-    }
-    
-    /// Вспомогательный метод для проверки, что наша база была загружена первый раз, это необходимо
-    /// для того чтобы при каждом перезапуске не перезаписывать все данные из нашей изначальной модели
-    private func checkDataExists() async -> Bool {
-        let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
-        do {
-            let count = try StorageDataManager.shared.context.count(for: fetchRequest)
-            return count > 0
-        } catch {
-            print("Ошибка при проверке наличия данных: \(error)")
-            return false
         }
     }
     

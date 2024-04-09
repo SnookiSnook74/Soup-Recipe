@@ -33,7 +33,6 @@ class RecipeTableViewCell: UITableViewCell {
         setupConstraints()
     }
 
-
     func setupConstraints() {
         NSLayoutConstraint.activate([
             recipeImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),

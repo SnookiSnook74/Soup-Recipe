@@ -11,6 +11,8 @@ import UIKit
 
 final class StorageDataManager {
     
+    var fetchedResultsController: NSFetchedResultsController<RecipeEntity>?
+    
     static let shared = StorageDataManager()
     var persistentContainer: NSPersistentContainer!
     
@@ -69,10 +71,13 @@ final class StorageDataManager {
             recipeEntity.step = stepString
             recipeEntity.ingredients = ingredientsString
 
-            let image = try await NetworkManager.shared.loadImage(url: recipe.imageUrl)
-            if let imageData = image.jpegData(compressionQuality: 1.0) {
-                recipeEntity.image = imageData
+            if recipeEntity.image == nil {
+                let image = try await NetworkManager.shared.loadImage(url: recipe.imageUrl)
+                if let imageData = image.jpegData(compressionQuality: 1.0) {
+                    recipeEntity.image = imageData
+                }
             }
+            
             saveContext()
         } catch {
             print("Ошибка при обновлении рецепта: \(error)")
@@ -91,4 +96,22 @@ final class StorageDataManager {
             return []
         }
     }
+    
+    func fetchRecipes(indexPath: IndexPath) -> TestModel {
+        let result = fetchedResultsController?.object(at: indexPath)
+        return TestModel(name: result?.name, image: result?.image)
+    }
+    
+    
+    
+    
+//    func fetchRecipesTest(indexPath: IndexPath) -> TestModel {
+//        let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
+//        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: StorageDataManager.shared.context, sectionNameKeyPath: nil, cacheName: nil)
+//        let result = fetchedResultsController.object(at: indexPath)
+//    
+//        return TestModel(name: result.name, image: result.image)
+//    }
 }
+
+

@@ -11,16 +11,18 @@ import CoreData
 class StartViewController: UIViewController {
     
     let viewModel = RecipeViewModel()
-    
+
     var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "Поиск рецептов"
+        searchBar.backgroundColor = .systemBackground
         return searchBar
     }()
     
     var table: UITableView = {
         let table = UITableView()
         table.register(RecipeTableViewCell.self, forCellReuseIdentifier: "RecipeCell")
+        table.backgroundColor = .systemBackground
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
@@ -45,7 +47,7 @@ class StartViewController: UIViewController {
     
     func constraintSetup() {
         NSLayoutConstraint.activate([
-            table.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            table.topAnchor.constraint(equalTo: view.topAnchor),
             table.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             table.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             table.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -57,9 +59,7 @@ extension StartViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.updateSearchResults(for: searchText)
-        UIView.transition(with: table, duration: 0.35, options: .transitionCrossDissolve, animations: {
-            self.table.reloadData()
-        })
+        table.reloadSections(IndexSet(integer: 0), with: .automatic)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -83,23 +83,24 @@ extension StartViewController: UITableViewDelegate {
 }
 
 extension StartViewController: UITableViewDataSource {
+    
     func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = viewModel.fetchedResultsController.sections else { return 0 }
         return sections[section].numberOfObjects
+        
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as? RecipeTableViewCell else {
             fatalError("Не удалось найти указанную TableViewCell")
         }
-
-        let recipeEntity = viewModel.fetchedResultsController.object(at: indexPath)
-        cell.recipeName.text = recipeEntity.name
+      
+        let viewModel = StorageDataManager.shared.fetchRecipes(indexPath: indexPath)
+    
+        cell.recipeName.text = viewModel.name
         
-        if let imageData = recipeEntity.image {
+        if let imageData = viewModel.image {
             cell.recipeImage.image = UIImage(data: imageData)
-        } else {
-            cell.currentImageUrl = recipeEntity.imageUrl
         }
         return cell
     }
@@ -128,7 +129,5 @@ extension StartViewController: NSFetchedResultsControllerDelegate {
             fatalError("Ошибка в Controller")
         }
     }
-    
-    
 }
 
