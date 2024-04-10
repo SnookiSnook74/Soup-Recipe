@@ -8,10 +8,6 @@
 import CoreData
 import Foundation
 
-struct TestModel {
-    var name: String?
-    var image: Data?
-}
 
 class RecipeViewModel {
     

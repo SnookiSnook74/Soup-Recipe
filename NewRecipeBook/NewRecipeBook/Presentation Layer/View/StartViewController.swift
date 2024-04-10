@@ -11,7 +11,7 @@ import CoreData
 class StartViewController: UIViewController {
     
     let viewModel = RecipeViewModel()
-
+    
     var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "Поиск рецептов"
@@ -76,9 +76,9 @@ extension StartViewController: UITableViewDelegate {
     
     func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = DetailRecipeViewController()
-        let selectedRecipeEntity = viewModel.fetchedResultsController.object(at: indexPath)
-           detailVC.recipeEntity = selectedRecipeEntity
-           navigationController?.pushViewController(detailVC, animated: true)
+        let selectedRecipe = StorageDataManager.shared.fetchRecipes(indexPath: indexPath)
+        detailVC.recipe = selectedRecipe
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 
@@ -89,16 +89,15 @@ extension StartViewController: UITableViewDataSource {
         return sections[section].numberOfObjects
         
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as? RecipeTableViewCell else {
             fatalError("Не удалось найти указанную TableViewCell")
         }
-      
-        let viewModel = StorageDataManager.shared.fetchRecipes(indexPath: indexPath)
-    
-        cell.recipeName.text = viewModel.name
         
+        let viewModel = StorageDataManager.shared.fetchRecipes(indexPath: indexPath)
+        
+        cell.recipeName.text = viewModel.name
         if let imageData = viewModel.image {
             cell.recipeImage.image = UIImage(data: imageData)
         }
@@ -110,11 +109,11 @@ extension StartViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         table.beginUpdates()
     }
-
+    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         table.endUpdates()
     }
-
+    
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .insert:

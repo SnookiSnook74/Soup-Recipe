@@ -32,4 +32,7 @@ struct Ingredient: Codable {
 struct WrapperModel {
     var name: String?
     var image: Data?
+    var description: String?
+    var step: String?
+    var ingredient: String?
 }

@@ -77,7 +77,25 @@ final class StorageDataManager {
                     recipeEntity.image = imageData
                 }
             }
-            
+            saveContext()
+        } catch {
+            print("Ошибка при обновлении рецепта: \(error)")
+        }
+    }
+    
+    func updateRecipeName(recipe: WrapperModel ,newName: String) {
+        let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "name == %@", recipe.name!)
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            var recipeEntity: RecipeEntity
+            if let existingRecipe = results.first {
+                recipeEntity = existingRecipe
+            } else {
+                recipeEntity = RecipeEntity(context: context)
+            }
+            recipeEntity.name = newName
             saveContext()
         } catch {
             print("Ошибка при обновлении рецепта: \(error)")
@@ -97,21 +115,12 @@ final class StorageDataManager {
         }
     }
     
-    func fetchRecipes(indexPath: IndexPath) -> TestModel {
+    func fetchRecipes(indexPath: IndexPath) -> WrapperModel {
         let result = fetchedResultsController?.object(at: indexPath)
-        return TestModel(name: result?.name, image: result?.image)
+        return WrapperModel(name: result?.name, image: result?.image,
+                            description: result?.descriptionRecipe,
+                            step: result?.step, ingredient: result?.ingredients)
     }
-    
-    
-    
-    
-//    func fetchRecipesTest(indexPath: IndexPath) -> TestModel {
-//        let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
-//        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: StorageDataManager.shared.context, sectionNameKeyPath: nil, cacheName: nil)
-//        let result = fetchedResultsController.object(at: indexPath)
-//    
-//        return TestModel(name: result.name, image: result.image)
-//    }
 }
 
 

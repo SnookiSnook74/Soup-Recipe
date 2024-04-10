@@ -9,6 +9,7 @@ import UIKit
 
 class EditRecipeViewController: UIViewController {
 
+    var recipe: WrapperModel?
 
     var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -107,7 +108,9 @@ extension EditRecipeViewController {
     }
 
     @objc func saveChanges() {
-
+        
+        StorageDataManager.shared.updateRecipeName(recipe: recipe!, newName: recipeNameTextField.text)
+        
         navigationController?.popViewController(animated: true)
     }
 }

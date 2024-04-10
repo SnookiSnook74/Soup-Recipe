@@ -9,157 +9,108 @@ import UIKit
 
 class DetailRecipeViewController: UIViewController {
     
-    var recipeEntity: RecipeEntity?
+    var recipe: WrapperModel?
     
-    var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-
-    var imagesView: UIImageView = {
-        let images = UIImageView()
-        images.translatesAutoresizingMaskIntoConstraints = false
-        images.contentMode = .scaleAspectFill
-        images.clipsToBounds = true
-        return images
-    }()
-
-    var descriptionLabel: UILabel = {
-        var descript = UILabel()
-        descript.translatesAutoresizingMaskIntoConstraints = false
-        descript.font = .boldSystemFont(ofSize: 22)
-        descript.text = "Описание"
-        return descript
-    }()
-
-    var descriptionViewList: UILabel = {
-        var descript = UILabel()
-        descript.translatesAutoresizingMaskIntoConstraints = false
-        descript.font = .systemFont(ofSize: 18)
-        descript.numberOfLines = 0
-        return descript
-    }()
-
-    var ingredientsViewLabel: UILabel = {
-        let ingredientsView = UILabel()
-        ingredientsView.translatesAutoresizingMaskIntoConstraints = false
-        ingredientsView.font = .boldSystemFont(ofSize: 22)
-        ingredientsView.text = "Ингредиенты"
-        return ingredientsView
-    }()
-
-    var ingredientsListView: UILabel = {
-        let ingredientsList = UILabel()
-        ingredientsList.translatesAutoresizingMaskIntoConstraints = false
-        ingredientsList.font = .systemFont(ofSize: 18)
-        ingredientsList.numberOfLines = 0
-        return ingredientsList
-    }()
-
-    var stepsViewLabel: UILabel = {
-        let stepsView = UILabel()
-        stepsView.translatesAutoresizingMaskIntoConstraints = false
-        stepsView.font = .boldSystemFont(ofSize: 22)
-        stepsView.text = "Пошаговый рецепт"
-        return stepsView
-    }()
-
-    var stepsViewList: UILabel = {
-        let stepsView = UILabel()
-        stepsView.translatesAutoresizingMaskIntoConstraints = false
-        stepsView.numberOfLines = 0
-        stepsView.font = .systemFont(ofSize: 18)
-        return stepsView
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .white
+        collectionView.register(DetailImageCollectionViewCell.self, forCellWithReuseIdentifier: "ImageCollectionViewCell")
+        collectionView.register(DetailTitleCollectionViewCell.self, forCellWithReuseIdentifier: "TitleCollectionViewCell")
+        collectionView.register(DetailTextCollectionViewCell.self, forCellWithReuseIdentifier: "TextCollectionViewCell")
+        collectionView.dataSource = self
+        collectionView.backgroundColor = .systemBackground
+        collectionView.collectionViewLayout = createLayout()
+        return collectionView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Описание"
-        addView()
-        setupConstraint()
-        setupNavigationBar()
-        configureUI()
-        view.backgroundColor = .white
+        view.addSubview(collectionView)
+        addConstraint()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Редактировать", 
+                                                            style: .plain, target: self,
+                                                            action: #selector(editRecipe))
     }
     
-    private func configureUI() {
-        guard let recipeEntity = recipeEntity else { return }
-        
-        title = recipeEntity.name
-        if let imageData = recipeEntity.image {
-            imagesView.image = UIImage(data: imageData)
-        }
-        descriptionViewList.text = recipeEntity.descriptionRecipe
-        stepsViewList.text = recipeEntity.step
-        ingredientsListView.text = recipeEntity.ingredients
+    func addConstraint() {
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.rightAnchor.constraint(equalTo: view.rightAnchor)
+        ])
     }
-
-    @objc private func editRecipe() {
+    
+    @objc func editRecipe() {
         let editRecipe = EditRecipeViewController()
+        editRecipe.recipe = self.recipe
         navigationController?.pushViewController(editRecipe, animated: true)
     }
 }
 
-extension DetailRecipeViewController {
-    private func setupNavigationBar() {
-        let buttonEdit = UIBarButtonItem(title: "Редактировать", style: .plain, target: self, action: #selector(editRecipe))
-        navigationItem.rightBarButtonItem = buttonEdit
+extension DetailRecipeViewController: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return Section.allCases.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let section = Section(rawValue: section) else { return 0 }
+        return section.itemCount
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let section = Section(rawValue: indexPath.section) else { fatalError("Ошибка в коллекции") }
+        
+        var identificator = section.cellIdentifier(for: indexPath)
+        
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: identificator, for: indexPath)
+        
+        switch section {
+        case .image:
+            if let cell = cell as? DetailImageCollectionViewCell, let imageData = recipe?.image {
+                cell.imageView.image = UIImage(data: imageData)
+            }
+        case .description:
+            if let cell = cell as? DetailTitleCollectionViewCell {
+                cell.titleLabel.text = "Описание"
+            } else if let cell = cell as? DetailTextCollectionViewCell {
+                cell.textLabel.text = recipe?.description
+            }
+        case .ingredients:
+            if let cell = cell as? DetailTitleCollectionViewCell {
+                cell.titleLabel.text = "Ингредиенты"
+            } else if let cell = cell as? DetailTextCollectionViewCell {
+                cell.textLabel.text = recipe?.ingredient
+            }
+        case .steps:
+            if let cell = cell as? DetailTitleCollectionViewCell {
+                cell.titleLabel.text = "Пошаговый рецепт"
+            } else if let cell = cell as? DetailTextCollectionViewCell {
+                cell.textLabel.text = recipe?.step
+            }
+        }
+        return cell
+    }
+    
+    private func createLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .estimated(50))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: .fixed(8), trailing: nil, bottom: .fixed(8))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .estimated(50))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                       subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
     }
 }
 
-extension DetailRecipeViewController {
-    func addView() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(imagesView)
-        scrollView.addSubview(descriptionLabel)
-        scrollView.addSubview(descriptionViewList)
-        scrollView.addSubview(ingredientsViewLabel)
-        scrollView.addSubview(ingredientsListView)
-        scrollView.addSubview(stepsViewLabel)
-        scrollView.addSubview(stepsViewList)
-    }
-}
 
-extension DetailRecipeViewController {
-    func setupConstraint() {
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
-            imagesView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            imagesView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            imagesView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            imagesView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            imagesView.heightAnchor.constraint(equalToConstant: 350),
-
-            descriptionLabel.topAnchor.constraint(equalTo: imagesView.bottomAnchor, constant: 20),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
-            descriptionViewList.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 10),
-            descriptionViewList.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            descriptionViewList.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
-            ingredientsViewLabel.topAnchor.constraint(equalTo: descriptionViewList.bottomAnchor, constant: 10),
-            ingredientsViewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            ingredientsViewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
-            ingredientsListView.topAnchor.constraint(equalTo: ingredientsViewLabel.bottomAnchor, constant: 10),
-            ingredientsListView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            ingredientsListView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
-            stepsViewLabel.topAnchor.constraint(equalTo: ingredientsListView.bottomAnchor, constant: 10),
-            stepsViewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stepsViewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
-            stepsViewList.topAnchor.constraint(equalTo: stepsViewLabel.bottomAnchor, constant: 10),
-            stepsViewList.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stepsViewList.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            stepsViewList.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-
-        ])
-    }
-}
