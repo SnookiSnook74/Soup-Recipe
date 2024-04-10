@@ -8,15 +8,26 @@
 import UIKit
 
 class DetailTextCollectionViewCell: UICollectionViewCell {
-    let textLabel = UILabel()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    let textLabel: UILabel = {
+        var textLabel = UILabel()
         textLabel.font = UIFont.systemFont(ofSize: 18)
         textLabel.numberOfLines = 0
         textLabel.translatesAutoresizingMaskIntoConstraints = false
+        return textLabel
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        addSubviews()
+        addConstraint()
+    }
+    
+    func addSubviews() {
         contentView.addSubview(textLabel)
-        
+    }
+    
+    func addConstraint() {
         NSLayoutConstraint.activate([
             textLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             textLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
@@ -24,7 +35,6 @@ class DetailTextCollectionViewCell: UICollectionViewCell {
             textLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
         ])
     }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

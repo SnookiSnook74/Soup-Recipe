@@ -31,6 +31,7 @@ class StartViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         constraintSetup()
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTable), name: .reloadTable, object: nil)
     }
     
     /// Начальные настройки нашей View
@@ -52,6 +53,10 @@ class StartViewController: UIViewController {
             table.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             table.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+    }
+    
+    @objc func reloadTable() {
+        table.reloadData()
     }
 }
 

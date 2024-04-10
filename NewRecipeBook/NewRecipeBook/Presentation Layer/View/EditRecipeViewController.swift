@@ -7,6 +7,10 @@
 
 import UIKit
 
+extension Notification.Name {
+    static let reloadTable = Notification.Name("reloadTable")
+}
+
 class EditRecipeViewController: UIViewController {
 
     var recipe: WrapperModel?
@@ -110,7 +114,7 @@ extension EditRecipeViewController {
     @objc func saveChanges() {
         
         StorageDataManager.shared.updateRecipeName(recipe: recipe!, newName: recipeNameTextField.text)
-        
+        NotificationCenter.default.post(name: .reloadTable, object: self)
         navigationController?.popViewController(animated: true)
     }
 }

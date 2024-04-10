@@ -8,7 +8,6 @@
 import CoreData
 import UIKit
 
-
 final class StorageDataManager {
     
     var fetchedResultsController: NSFetchedResultsController<RecipeEntity>?
@@ -58,18 +57,10 @@ final class StorageDataManager {
             recipeEntity.descriptionRecipe = recipe.description
             recipeEntity.imageUrl = recipe.imageUrl
     
+            var resultStepAndIgredients = stepsAndIngredients(recipe: recipe)
             
-            for (index, step) in recipe.steps.enumerated() {
-                stepString += "Шаг \(index + 1): \(step.step)"
-                stepString += "\n\n"
-                
-                for ingredient in step.ingredients {
-                    ingredientsString += "\(ingredient.name) - \(ingredient.quantity)\n"
-                }
-            }
-        
-            recipeEntity.step = stepString
-            recipeEntity.ingredients = ingredientsString
+            recipeEntity.step = resultStepAndIgredients.step
+            recipeEntity.ingredients = resultStepAndIgredients.ingredients
 
             if recipeEntity.image == nil {
                 let image = try await NetworkManager.shared.loadImage(url: recipe.imageUrl)
@@ -81,6 +72,24 @@ final class StorageDataManager {
         } catch {
             print("Ошибка при обновлении рецепта: \(error)")
         }
+    }
+    
+    func stepsAndIngredients(recipe: Recipe) -> (step: String,  ingredients: String) {
+        var stepString = ""
+        var ingredientsString = ""
+        
+        for (index, step) in recipe.steps.enumerated() {
+            stepString += "Шаг \(index + 1): \(step.step)"
+            stepString += "\n\n"
+            
+            for ingredient in step.ingredients {
+                ingredientsString += "\(ingredient.name) - \(ingredient.quantity)\n"
+            }
+        }
+        ingredientsString.removeLast()
+        stepString.removeLast()
+        
+        return (stepString, ingredientsString)
     }
     
     func updateRecipeName(recipe: WrapperModel ,newName: String) {
