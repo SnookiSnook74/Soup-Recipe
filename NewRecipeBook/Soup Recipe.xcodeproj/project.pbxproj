@@ -81,7 +81,6 @@
 			isa = PBXGroup;
 			children = (
 				6B5350532B2CB61A008F2E92 /* RecipeModel.swift */,
-				6B0DEF6F2BC6644E00246520 /* SectionCollection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -108,6 +107,24 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		6B0DEF732BC6B3C100246520 /* Service Layer */ = {
+			isa = PBXGroup;
+			children = (
+				6B5350512B2CAE5D008F2E92 /* JsonParser.swift */,
+				6BC5E6BB2B30B7D30099AD4C /* NetworkManager.swift */,
+			);
+			path = "Service Layer";
+			sourceTree = "<group>";
+		};
+		6B0DEF742BC6B5E100246520 /* Support Object */ = {
+			isa = PBXGroup;
+			children = (
+				6B5350572B303E04008F2E92 /* ProtocolRecipeParser.swift */,
+				6B0DEF6F2BC6644E00246520 /* SectionCollection.swift */,
+			);
+			path = "Support Object";
+			sourceTree = "<group>";
+		};
 		6B9A32D42B2C584E00CD750D = {
 			isa = PBXGroup;
 			children = (
@@ -129,9 +146,11 @@
 			isa = PBXGroup;
 			children = (
 				6BC5E6CC2B32D9860099AD4C /* App */,
-				6BC5E6C72B32D86B0099AD4C /* Domain Layer */,
 				6B9A32F42B2C646700CD750D /* Presentation Layer */,
-				6BC5E6C92B32D8F20099AD4C /* Data Access Layer */,
+				6BC5E6C72B32D86B0099AD4C /* Domain Layer */,
+				6BC5E6C92B32D8F20099AD4C /* Data Layer */,
+				6B0DEF732BC6B3C100246520 /* Service Layer */,
+				6B0DEF742BC6B5E100246520 /* Support Object */,
 				6B9A32F52B2C64D200CD750D /* Support */,
 				6B9A32EE2B2C585000CD750D /* Info.plist */,
 				6B0DEF2F2BC1E89000246520 /* RecipeDataModel.xcdatamodeld */,
@@ -162,20 +181,17 @@
 		6BC5E6C72B32D86B0099AD4C /* Domain Layer */ = {
 			isa = PBXGroup;
 			children = (
-				6B0DEF422BC27A0900246520 /* StorageDataManager.swift */,
 			);
 			path = "Domain Layer";
 			sourceTree = "<group>";
 		};
-		6BC5E6C92B32D8F20099AD4C /* Data Access Layer */ = {
+		6BC5E6C92B32D8F20099AD4C /* Data Layer */ = {
 			isa = PBXGroup;
 			children = (
-				6B5350572B303E04008F2E92 /* ProtocolRecipeParser.swift */,
-				6B5350512B2CAE5D008F2E92 /* JsonParser.swift */,
-				6BC5E6BB2B30B7D30099AD4C /* NetworkManager.swift */,
 				6B0DEF622BC507D300246520 /* RecipesRepository.swift */,
+				6B0DEF422BC27A0900246520 /* StorageDataManager.swift */,
 			);
-			path = "Data Access Layer";
+			path = "Data Layer";
 			sourceTree = "<group>";
 		};
 		6BC5E6CC2B32D9860099AD4C /* App */ = {

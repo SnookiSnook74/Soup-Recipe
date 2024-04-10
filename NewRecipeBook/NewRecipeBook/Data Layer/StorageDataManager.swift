@@ -40,8 +40,6 @@ final class StorageDataManager {
     func updateOrCreateRecipe(from recipe: Recipe) async {
         let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "imageUrl == %@", recipe.imageUrl)
-        var stepString = ""
-        var ingredientsString = ""
         
         do {
             let results = try context.fetch(fetchRequest)
@@ -57,7 +55,7 @@ final class StorageDataManager {
             recipeEntity.descriptionRecipe = recipe.description
             recipeEntity.imageUrl = recipe.imageUrl
     
-            var resultStepAndIgredients = stepsAndIngredients(recipe: recipe)
+            let resultStepAndIgredients = stepsAndIngredients(recipe: recipe)
             
             recipeEntity.step = resultStepAndIgredients.step
             recipeEntity.ingredients = resultStepAndIgredients.ingredients
@@ -130,6 +128,16 @@ final class StorageDataManager {
                             description: result?.descriptionRecipe,
                             step: result?.step, ingredient: result?.ingredients)
     }
+    
+    func fetchAllRecipes() -> [WrapperModel] {
+        guard let objects = fetchedResultsController?.fetchedObjects else { return [] }
+        return objects.map { result in
+            WrapperModel(name: result.name, image: result.image,
+                         description: result.descriptionRecipe,
+                         step: result.step, ingredient: result.ingredients)
+        }
+    }
+
 }
 
 

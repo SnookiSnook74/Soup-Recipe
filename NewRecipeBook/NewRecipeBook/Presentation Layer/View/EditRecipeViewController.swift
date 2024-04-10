@@ -112,7 +112,6 @@ extension EditRecipeViewController {
     }
 
     @objc func saveChanges() {
-        
         StorageDataManager.shared.updateRecipeName(recipe: recipe!, newName: recipeNameTextField.text)
         NotificationCenter.default.post(name: .reloadTable, object: self)
         navigationController?.popViewController(animated: true)

@@ -100,6 +100,9 @@ extension StartViewController: UITableViewDataSource {
             fatalError("Не удалось найти указанную TableViewCell")
         }
         
+//        viewModel.wrapperModel = StorageDataManager.shared.fetchAllRecipes()
+//        let viewModel = viewModel.wrapperModel?[indexPath.row]
+        
         let viewModel = StorageDataManager.shared.fetchRecipes(indexPath: indexPath)
         
         cell.recipeName.text = viewModel.name
