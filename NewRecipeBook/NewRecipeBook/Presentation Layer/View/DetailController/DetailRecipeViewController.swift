@@ -15,7 +15,6 @@ class DetailRecipeViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .white
         collectionView.register(DetailImageCollectionViewCell.self, forCellWithReuseIdentifier: "ImageCollectionViewCell")
         collectionView.register(DetailTitleCollectionViewCell.self, forCellWithReuseIdentifier: "TitleCollectionViewCell")
         collectionView.register(DetailTextCollectionViewCell.self, forCellWithReuseIdentifier: "TextCollectionViewCell")
@@ -29,7 +28,8 @@ class DetailRecipeViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(collectionView)
         addConstraint()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Редактировать", 
+        title = "Описание"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Редактировать",
                                                             style: .plain, target: self,
                                                             action: #selector(editRecipe))
     }
@@ -65,9 +65,9 @@ extension DetailRecipeViewController: UICollectionViewDataSource {
         
         guard let section = Section(rawValue: indexPath.section) else { fatalError("Ошибка в коллекции") }
         
-        var identificator = section.cellIdentifier(for: indexPath)
+        let identificator = section.cellIdentifier(for: indexPath)
         
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: identificator, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identificator, for: indexPath)
         
         switch section {
         case .image:

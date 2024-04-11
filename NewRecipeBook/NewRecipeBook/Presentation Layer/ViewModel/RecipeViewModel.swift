@@ -13,8 +13,6 @@ class RecipeViewModel {
     
     private var repository = RecipesRepository()
     
-    var wrapperModel: [WrapperModel]?
-    
     var fetchedResultsController: NSFetchedResultsController<RecipeEntity>!
     
     init() {

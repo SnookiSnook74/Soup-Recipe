@@ -23,6 +23,7 @@ class RecipeTableViewCell: UITableViewCell {
     let recipeName: UILabel = {
         var text = UILabel()
         text.translatesAutoresizingMaskIntoConstraints = false
+        text.numberOfLines = 0
         return text
     }()
 

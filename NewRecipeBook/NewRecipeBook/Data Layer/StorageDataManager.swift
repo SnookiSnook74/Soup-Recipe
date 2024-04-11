@@ -10,7 +10,7 @@ import UIKit
 
 final class StorageDataManager {
     
-    var fetchedResultsController: NSFetchedResultsController<RecipeEntity>?
+    var fetchedResultsController: NSFetchedResultsController<RecipeEntity>!
     
     static let shared = StorageDataManager()
     var persistentContainer: NSPersistentContainer!
@@ -90,9 +90,10 @@ final class StorageDataManager {
         return (stepString, ingredientsString)
     }
     
-    func updateRecipeName(recipe: WrapperModel ,newName: String) {
+    /// Обновление рецепта (используем как ключ ingredients так как это поле неизменяемо)
+    func updateRecipeInformation(recipe: WrapperModel,newName: String, newDescription: String, newStep: String) {
         let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "name == %@", recipe.name!)
+        fetchRequest.predicate = NSPredicate(format: "ingredients == %@", recipe.ingredient!)
         
         do {
             let results = try context.fetch(fetchRequest)
@@ -103,9 +104,12 @@ final class StorageDataManager {
                 recipeEntity = RecipeEntity(context: context)
             }
             recipeEntity.name = newName
+            recipeEntity.descriptionRecipe = newDescription
+            recipeEntity.step = newStep
+        
             saveContext()
         } catch {
-            print("Ошибка при обновлении рецепта: \(error)")
+            print("Ошибка при обновлении рецепта в описании: \(error)")
         }
     }
 
@@ -122,6 +126,7 @@ final class StorageDataManager {
         }
     }
     
+    /// Обработка одного конкретного рецепта
     func fetchRecipes(indexPath: IndexPath) -> WrapperModel {
         let result = fetchedResultsController?.object(at: indexPath)
         return WrapperModel(name: result?.name, image: result?.image,
@@ -129,6 +134,7 @@ final class StorageDataManager {
                             step: result?.step, ingredient: result?.ingredients)
     }
     
+    /// Обертка для всех рецептов из базы
     func fetchAllRecipes() -> [WrapperModel] {
         guard let objects = fetchedResultsController?.fetchedObjects else { return [] }
         return objects.map { result in
@@ -139,5 +145,4 @@ final class StorageDataManager {
     }
 
 }
-
 

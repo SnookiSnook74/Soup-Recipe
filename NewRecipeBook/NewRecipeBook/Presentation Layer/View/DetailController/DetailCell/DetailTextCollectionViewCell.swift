@@ -23,6 +23,10 @@ class DetailTextCollectionViewCell: UICollectionViewCell {
         addConstraint()
     }
     
+    func configurate(detail: String) {
+        textLabel.text = detail
+    }
+    
     func addSubviews() {
         contentView.addSubview(textLabel)
     }

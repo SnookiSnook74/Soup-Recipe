@@ -28,7 +28,6 @@ struct Ingredient: Codable {
     var quantity: String
 }
 
-
 struct WrapperModel {
     var name: String?
     var image: Data?

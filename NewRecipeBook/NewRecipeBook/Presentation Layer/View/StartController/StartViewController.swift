@@ -58,6 +58,10 @@ class StartViewController: UIViewController {
     @objc func reloadTable() {
         table.reloadData()
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension StartViewController: UISearchBarDelegate {
@@ -100,9 +104,6 @@ extension StartViewController: UITableViewDataSource {
             fatalError("Не удалось найти указанную TableViewCell")
         }
         
-//        viewModel.wrapperModel = StorageDataManager.shared.fetchAllRecipes()
-//        let viewModel = viewModel.wrapperModel?[indexPath.row]
-        
         let viewModel = StorageDataManager.shared.fetchRecipes(indexPath: indexPath)
         
         cell.recipeName.text = viewModel.name
@@ -125,7 +126,7 @@ extension StartViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .insert:
-            table.insertRows(at: [newIndexPath!], with: .fade)
+            table.insertRows(at: [newIndexPath!], with: .right)
         case .delete:
             table.deleteRows(at: [indexPath!], with: .left)
         case .update:
@@ -137,4 +138,5 @@ extension StartViewController: NSFetchedResultsControllerDelegate {
         }
     }
 }
+
 
