@@ -155,7 +155,7 @@ extension EditRecipeViewController {
         
         let keyboardFrame = keyboardFrameValue.cgRectValue
         let keyboardHeight = keyboardFrame.height
-        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardHeight, right: 0.0)
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardHeight + 50, right: 0.0)
         
         collectionView.contentInset = contentInsets
         collectionView.scrollIndicatorInsets = contentInsets

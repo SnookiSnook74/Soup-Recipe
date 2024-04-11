@@ -20,9 +20,8 @@ class StartViewController: UIViewController {
     }()
     
     var table: UITableView = {
-        let table = UITableView()
+        let table = UITableView(frame: .zero, style: .insetGrouped)
         table.register(RecipeTableViewCell.self, forCellReuseIdentifier: "RecipeCell")
-        table.backgroundColor = .systemBackground
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
@@ -79,15 +78,19 @@ extension StartViewController: UISearchBarDelegate {
 }
 
 extension StartViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        90
+    }
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        80
+        UITableView.automaticDimension
     }
     
-    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = DetailRecipeViewController()
         let selectedRecipe = StorageDataManager.shared.fetchRecipes(indexPath: indexPath)
         detailVC.recipe = selectedRecipe
         navigationController?.pushViewController(detailVC, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

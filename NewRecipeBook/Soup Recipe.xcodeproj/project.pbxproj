@@ -106,6 +106,7 @@
 		6B0DEF732BC6B3C100246520 /* Service Layer */ = {
 			isa = PBXGroup;
 			children = (
+				6B0DEF422BC27A0900246520 /* StorageDataManager.swift */,
 				6B5350512B2CAE5D008F2E92 /* JsonParser.swift */,
 				6BC5E6BB2B30B7D30099AD4C /* NetworkManager.swift */,
 			);
@@ -213,7 +214,6 @@
 			isa = PBXGroup;
 			children = (
 				6B0DEF2C2BC199B100246520 /* View */,
-				6B0DEF2B2BC199A300246520 /* Model */,
 				6B0DEF2A2BC1997600246520 /* ViewModel */,
 			);
 			path = "Presentation Layer";
@@ -232,7 +232,7 @@
 		6BC5E6C72B32D86B0099AD4C /* Domain Layer */ = {
 			isa = PBXGroup;
 			children = (
-				6B0DEF5D2BC2FFFA00246520 /* RecipeEntity+CoreDataProperties.swift */,
+				6B0DEF2B2BC199A300246520 /* Model */,
 			);
 			path = "Domain Layer";
 			sourceTree = "<group>";
@@ -240,8 +240,8 @@
 		6BC5E6C92B32D8F20099AD4C /* Data Layer */ = {
 			isa = PBXGroup;
 			children = (
+				6B0DEF5D2BC2FFFA00246520 /* RecipeEntity+CoreDataProperties.swift */,
 				6B0DEF622BC507D300246520 /* RecipesRepository.swift */,
-				6B0DEF422BC27A0900246520 /* StorageDataManager.swift */,
 			);
 			path = "Data Layer";
 			sourceTree = "<group>";
