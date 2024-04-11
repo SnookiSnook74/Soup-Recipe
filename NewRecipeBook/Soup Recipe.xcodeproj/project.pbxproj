@@ -16,7 +16,6 @@
 		6B0DEF6C2BC591A200246520 /* DetailTextCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0DEF6B2BC591A200246520 /* DetailTextCollectionViewCell.swift */; };
 		6B0DEF6E2BC5925200246520 /* DetailTitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0DEF6D2BC5925200246520 /* DetailTitleCollectionViewCell.swift */; };
 		6B0DEF702BC6644E00246520 /* SectionCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0DEF6F2BC6644E00246520 /* SectionCollection.swift */; };
-		6B0DEF762BC7AB0200246520 /* EditRecipeViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0DEF752BC7AB0200246520 /* EditRecipeViewController2.swift */; };
 		6B0DEF7E2BC7B0CF00246520 /* EditImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0DEF7D2BC7B0CF00246520 /* EditImageCell.swift */; };
 		6B0DEF802BC7BBB300246520 /* EditTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0DEF7F2BC7BBB300246520 /* EditTitleCell.swift */; };
 		6B0DEF822BC7BBD300246520 /* EditDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0DEF812BC7BBD200246520 /* EditDescriptionCell.swift */; };
@@ -46,7 +45,6 @@
 		6B0DEF6B2BC591A200246520 /* DetailTextCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTextCollectionViewCell.swift; sourceTree = "<group>"; };
 		6B0DEF6D2BC5925200246520 /* DetailTitleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitleCollectionViewCell.swift; sourceTree = "<group>"; };
 		6B0DEF6F2BC6644E00246520 /* SectionCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCollection.swift; sourceTree = "<group>"; };
-		6B0DEF752BC7AB0200246520 /* EditRecipeViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecipeViewController2.swift; sourceTree = "<group>"; };
 		6B0DEF7D2BC7B0CF00246520 /* EditImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageCell.swift; sourceTree = "<group>"; };
 		6B0DEF7F2BC7BBB300246520 /* EditTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTitleCell.swift; sourceTree = "<group>"; };
 		6B0DEF812BC7BBD200246520 /* EditDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDescriptionCell.swift; sourceTree = "<group>"; };
@@ -207,7 +205,6 @@
 				6B9A32F52B2C64D200CD750D /* Support */,
 				6B9A32EE2B2C585000CD750D /* Info.plist */,
 				6B0DEF2F2BC1E89000246520 /* RecipeDataModel.xcdatamodeld */,
-				6B0DEF752BC7AB0200246520 /* EditRecipeViewController2.swift */,
 			);
 			path = NewRecipeBook;
 			sourceTree = "<group>";
@@ -353,7 +350,6 @@
 				6B0DEF432BC27A0900246520 /* StorageDataManager.swift in Sources */,
 				6B0DEF6E2BC5925200246520 /* DetailTitleCollectionViewCell.swift in Sources */,
 				6B0DEF632BC507D300246520 /* RecipesRepository.swift in Sources */,
-				6B0DEF762BC7AB0200246520 /* EditRecipeViewController2.swift in Sources */,
 				6B0DEF842BC7DBF400246520 /* EditRecipeSection.swift in Sources */,
 				6B5350522B2CAE5D008F2E92 /* JsonParser.swift in Sources */,
 				6B9A32E32B2C584E00CD750D /* SceneDelegate.swift in Sources */,
